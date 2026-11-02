@@ -1,10 +1,17 @@
-require("dotenv").config()
-const app = require("./src/app")
-const connectToDB = require("./src/config/database")
+require("dotenv").config();
+const app = require("./src/app");
+const connectToDB = require("./src/config/database");
 
-connectToDB()
+async function startServer() {
+  try {
+    await connectToDB();
+    app.listen(3000, () => {
+      console.log("Server is running on port 3000");
+    });
+  } catch (err) {
+    console.error("Failed to start server:", err.message);
+    process.exitCode = 1;
+  }
+}
 
-
-app.listen(3000, () => {
-    console.log("Server is running on port 3000")
-})
+startServer();
